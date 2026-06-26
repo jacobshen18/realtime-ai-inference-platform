@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "user_id": "user-123",
+      "features": {
+        "engagement_score": 0.82,
+        "days_since_last_visit": 2,
+        "support_contacts_30d": 0,
+        "plan_tenure_days": 420
+      }
+    },
+    {
+      "user_id": "user-456",
+      "features": {
+        "engagement_score": 0.24,
+        "days_since_last_visit": 21,
+        "support_contacts_30d": 2,
+        "plan_tenure_days": 35
+      }
+    }
+  ]
+}

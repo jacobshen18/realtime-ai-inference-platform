@@ -1,0 +1,13 @@
+{
+  "user_id": "user-123",
+  "features": {
+    "engagement_score": 0.82,
+    "days_since_last_visit": 2,
+    "support_contacts_30d": 0,
+    "plan_tenure_days": 420
+  },
+  "context": {
+    "surface": "home",
+    "request_id": "demo-request-001"
+  }
+}
