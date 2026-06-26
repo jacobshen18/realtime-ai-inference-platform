@@ -3,12 +3,12 @@ from __future__ import annotations
 from time import perf_counter
 
 from realtime_ai_platform.metrics import LatencyMetrics
-from realtime_ai_platform.model import LifecycleRiskModel
+from realtime_ai_platform.model_loader import PredictiveModel
 from realtime_ai_platform.schemas import PredictionRequest, PredictionResponse
 
 
 class InferenceService:
-    def __init__(self, model: LifecycleRiskModel, metrics: LatencyMetrics) -> None:
+    def __init__(self, model: PredictiveModel, metrics: LatencyMetrics) -> None:
         self.model = model
         self.metrics = metrics
 

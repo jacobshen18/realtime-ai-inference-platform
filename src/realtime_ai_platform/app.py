@@ -5,7 +5,7 @@ from time import perf_counter
 from fastapi import FastAPI
 
 from realtime_ai_platform.metrics import LatencyMetrics
-from realtime_ai_platform.model import LifecycleRiskModel
+from realtime_ai_platform.model_loader import load_model_from_environment
 from realtime_ai_platform.schemas import (
     BatchPredictionRequest,
     BatchPredictionResponse,
@@ -24,7 +24,7 @@ def create_app() -> FastAPI:
         description="Reference FastAPI platform for real-time AI inference and monitoring.",
     )
 
-    model = LifecycleRiskModel()
+    model = load_model_from_environment()
     metrics = LatencyMetrics()
     service = InferenceService(model=model, metrics=metrics)
 

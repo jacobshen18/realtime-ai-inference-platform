@@ -32,6 +32,10 @@ dev = [
   "pytest>=8.0",
   "ruff>=0.5",
 ]
+mlflow = [
+  "mlflow>=2.14",
+  "pandas>=2.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/realtime_ai_platform"]
