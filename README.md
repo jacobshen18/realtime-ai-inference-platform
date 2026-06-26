@@ -2,9 +2,10 @@
 
 A compact reference project for productionizing real-time AI systems.
 
-This repository demonstrates the core pieces of an inference service: MLflow-backed model lifecycle
-management, real-time and batch prediction APIs, request validation, latency metrics, health checks,
-Docker packaging, and tests.
+This repository demonstrates the core pieces of a real-time inference service: MLflow-backed model
+lifecycle management, low-latency prediction APIs, request validation, latency metrics, health
+checks, Docker packaging, and tests. Batch inference is included as a secondary path for operational
+workloads and backfills.
 
 The model is intentionally lightweight and deterministic so the platform code is easy to run and
 review without GPU access or external model downloads.
@@ -19,8 +20,8 @@ on those engineering layers.
 
 - FastAPI inference service
 - Optional MLflow model loading with `MLFLOW_MODEL_URI`
-- Real-time single prediction endpoint
-- Batch prediction endpoint
+- Real-time single prediction endpoint as the primary serving path
+- Batch prediction endpoint for operational backfills and offline publishing
 - Model warmup on application startup
 - Pydantic request and response schemas
 - In-memory latency and throughput metrics
@@ -46,7 +47,7 @@ curl -X POST http://localhost:8000/v1/predict \
   -d @examples/predict.json
 ```
 
-### Batch Prediction
+### Batch Prediction For Backfills
 
 ```bash
 curl -X POST http://localhost:8000/v1/predict/batch \
@@ -102,17 +103,21 @@ docker run --rm -p 8000:8000 realtime-ai-inference-platform
 ## Architecture
 
 ```text
-client
+online product system
   |
   v
-FastAPI routes
+FastAPI /v1/predict
   |
   v
-request schema -> model service -> prediction response
-                  |
-                  v
-             latency metrics
+request schema -> MLflow or built-in model -> low-latency response
+                  |                         |
+                  v                         v
+             latency metrics          readiness checks
 ```
+
+The realtime path is intentionally separate from the batch endpoint. In production systems this
+keeps online latency, validation, and monitoring concerns visible instead of hiding them inside an
+offline scoring job.
 
 ## Production Notes
 
@@ -121,6 +126,7 @@ In a real deployment, this skeleton would usually connect to:
 - A model artifact registry
 - MLflow model registry aliases for champion/challenger deployments
 - Feature stores or online feature services
+- Online serving autoscaling and request timeouts
 - Canary and shadow deployments
 - Distributed tracing and structured logs
 - Autoscaling and load shedding

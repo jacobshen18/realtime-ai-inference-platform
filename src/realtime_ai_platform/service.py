@@ -12,7 +12,7 @@ class InferenceService:
         self.model = model
         self.metrics = metrics
 
-    def predict(self, request: PredictionRequest) -> PredictionResponse:
+    def predict(self, request: PredictionRequest, serving_path: str = "realtime") -> PredictionResponse:
         started = perf_counter()
         prediction = self.model.predict(request.features)
         latency_ms = (perf_counter() - started) * 1000
@@ -23,5 +23,6 @@ class InferenceService:
             score=prediction.score,
             label=prediction.label,
             model_version=self.model.version,
+            serving_path=serving_path,
             latency_ms=round(latency_ms, 3),
         )

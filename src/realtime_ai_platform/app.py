@@ -48,7 +48,7 @@ def create_app() -> FastAPI:
     @app.post("/v1/predict/batch", response_model=BatchPredictionResponse)
     def predict_batch(request: BatchPredictionRequest) -> BatchPredictionResponse:
         started = perf_counter()
-        predictions = [service.predict(item) for item in request.items]
+        predictions = [service.predict(item, serving_path="batch") for item in request.items]
         total_latency_ms = (perf_counter() - started) * 1000
         return BatchPredictionResponse(
             predictions=predictions,

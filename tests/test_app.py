@@ -33,6 +33,7 @@ def test_predict_endpoint() -> None:
     assert payload["user_id"] == "user-123"
     assert 0 <= payload["score"] <= 1
     assert payload["model_version"] == "lifecycle-risk-toy-v1"
+    assert payload["serving_path"] == "realtime"
 
 
 def test_batch_predict_endpoint() -> None:
@@ -55,4 +56,6 @@ def test_batch_predict_endpoint() -> None:
     )
 
     assert response.status_code == 200
-    assert len(response.json()["predictions"]) == 2
+    payload = response.json()
+    assert len(payload["predictions"]) == 2
+    assert payload["predictions"][0]["serving_path"] == "batch"
